@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 public class CrudUtil {
 
     private static PreparedStatement getStatement(String sql, Object... args) throws Exception {
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
         PreparedStatement st = conn.prepareStatement(sql);
 
         if (args != null) {

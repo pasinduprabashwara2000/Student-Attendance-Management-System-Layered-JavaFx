@@ -43,7 +43,7 @@ public class ClassDaoImpl implements ClassDao {
             return new ClassEntity(
                 rst.getString("class_id"),
                 rst.getString("course_id"),
-                rst.getString("subject_name"),
+                rst.getString("subject_id"),
                 rst.getString("lecture_id"),
                 rst.getDate("date").toLocalDate()
             );
@@ -62,7 +62,7 @@ public class ClassDaoImpl implements ClassDao {
             classEntities.add(new ClassEntity(
                     rst.getString("class_id"),
                     rst.getString("course_id"),
-                    rst.getString("subject_name"),
+                    rst.getString("subject_id"),
                     rst.getString("lecture_id"),
                     rst.getDate("date").toLocalDate()
             ));

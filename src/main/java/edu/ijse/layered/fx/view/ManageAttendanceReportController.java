@@ -1,32 +1,36 @@
 package edu.ijse.layered.fx.view;
 
+import edu.ijse.layered.fx.controller.AttendanceReportsController;
+import edu.ijse.layered.fx.dto.AttendanceDto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 public class ManageAttendanceReportController {
 
-    @FXML
-    private TableColumn<?, ?> colCourseName;
+    private final AttendanceReportsController attendanceReportsController = new AttendanceReportsController();
 
     @FXML
-    private TableColumn<?, ?> colDate;
+    private TableColumn<AttendanceDto, String> colCourseName;
 
     @FXML
-    private TableColumn<?, ?> colLectureId;
+    private TableColumn<AttendanceDto, Date> colDate;
 
     @FXML
-    private TableColumn<?, ?> colStatus;
+    private TableColumn<AttendanceDto, String> colLectureId;
 
     @FXML
-    private TableColumn<?, ?> colStudentName;
+    private TableColumn<AttendanceDto, String> colStatus;
 
     @FXML
-    private TableColumn<?, ?> colSubjectName;
+    private TableColumn<AttendanceDto, String> colStudentName;
+
+    @FXML
+    private TableColumn<AttendanceDto, String> colSubjectName;
 
     @FXML
     private Button filterBtn;
@@ -38,7 +42,7 @@ public class ManageAttendanceReportController {
     private Button reportBtn;
 
     @FXML
-    private TableView<?> tableView;
+    private TableView<AttendanceDto> tableView;
 
     @FXML
     private Label titleLabel;
@@ -47,13 +51,31 @@ public class ManageAttendanceReportController {
     private DatePicker toDatePicker;
 
     @FXML
+    public void initialize(){
+        colLectureId.setCellValueFactory(new PropertyValueFactory<>("lectureId"));
+        colStudentName.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+        colCourseName.setCellValueFactory(new PropertyValueFactory<>("courseName"));
+        colSubjectName.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
+
+    @FXML
     void genarateReport(ActionEvent event) {
 
     }
 
     @FXML
     void onFilter(ActionEvent event) {
+        LocalDate startDate = fromDatePicker.getValue();
+        LocalDate endDate = toDatePicker.getValue();
 
+        try {
+            tableView.getItems().clear();
+            tableView.getItems().addAll(attendanceReportsController.searchByDate(startDate,endDate));
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage());
+        }
     }
 
 }

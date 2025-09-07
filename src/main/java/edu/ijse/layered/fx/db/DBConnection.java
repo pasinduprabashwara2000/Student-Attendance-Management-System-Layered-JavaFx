@@ -5,15 +5,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
+    private static DBConnection dBConnection;
+    private Connection connection;
 
-    private static final String URL = "jdbc:mysql://localhost:3306/IJSE";
-    private static final String USER = "root";
-    private static final String PASSWORD = "mysql";
-
-    public static Connection getConnection() throws ClassNotFoundException, SQLException {
-
+    private DBConnection() throws ClassNotFoundException, SQLException{
         Class.forName("com.mysql.cj.jdbc.Driver");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/IJSE", "root", "mysql");
+    }
 
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    public static DBConnection getInstance() throws ClassNotFoundException, SQLException{
+        if(dBConnection == null){
+            dBConnection = new DBConnection();
+        }
+        return dBConnection;
+    }
+
+    public Connection getConnection(){
+        return connection;
     }
 }
+
+

@@ -57,7 +57,7 @@ CREATE INDEX idx_enroll_course_id ON enroll(course_id);
 
 -- Table: attendance
 CREATE TABLE attendance (
-    attendance_id INT AUTO_INCREMENT PRIMARY KEY,
+    attendance_id INT PRIMARY KEY,
     date         DATE NOT NULL,
     lecture_id   VARCHAR(10) NOT NULL,
     student_name VARCHAR(55) NOT NULL,

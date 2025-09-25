@@ -65,7 +65,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <TableView fx:id="detailsTabel" layoutX="55.0" layoutY="252.0" prefHeight="339.0" prefWidth="939.0" stylesheets="@css/style2.css">
+      <TableView fx:id="detailsTabel" layoutX="55.0" layoutY="252.0" onMouseClicked="#selectLecture" prefHeight="339.0" prefWidth="939.0" stylesheets="@css/style2.css">
         <columns>
             <TableColumn fx:id="idColmn" prefWidth="179.0" text="lect_id" />
             <TableColumn fx:id="nameColmn" prefWidth="437.0" text="lect_Name" />

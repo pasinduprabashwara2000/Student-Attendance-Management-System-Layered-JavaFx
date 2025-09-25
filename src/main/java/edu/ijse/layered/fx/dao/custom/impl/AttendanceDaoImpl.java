@@ -3,7 +3,6 @@ package edu.ijse.layered.fx.dao.custom.impl;
 import edu.ijse.layered.fx.dao.CrudUtil;
 import edu.ijse.layered.fx.dao.custom.AttendanceDao;
 import edu.ijse.layered.fx.entity.AttendanceEntity;
-
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -13,12 +12,12 @@ public class AttendanceDaoImpl implements AttendanceDao {
     public boolean save(AttendanceEntity t) throws Exception {
         return CrudUtil.executeUpdate(
                 "INSERT INTO attendance(attendance_id, date, lecture_id, student_name, course_name, subject_name, status) VALUES (?,?,?,?,?,?,?)",
-                t.getAttendance_id(),
+                t.getAttendanceId(),
                 t.getDate(),
-                t.getLecture_id(),
-                t.getStudent_name(),
-                t.getCourse_name(),
-                t.getSubject_name(),
+                t.getLectureId(),
+                t.getStudentName(),
+                t.getCourseName(),
+                t.getSubjectName(),
                 t.getStatus()
         );
     }
@@ -27,19 +26,19 @@ public class AttendanceDaoImpl implements AttendanceDao {
     public boolean update(AttendanceEntity t) throws Exception {
         return CrudUtil.executeUpdate(
                 "UPDATE attendance SET lecture_id = ?, student_name = ?, course_name = ?, subject_name = ?, status = ? WHERE attendance_id = ?",
-                t.getLecture_id(),
-                t.getStudent_name(),
-                t.getCourse_name(),
-                t.getSubject_name(),
+                t.getLectureId(),
+                t.getStudentName(),
+                t.getCourseName(),
+                t.getSubjectName(),
                 t.getStatus(),
-                t.getAttendance_id()
+                t.getAttendanceId()
         );
     }
 
     @Override
     public boolean delete(String s) throws Exception {
         return CrudUtil.executeUpdate(
-                "DELETE FROM attendance WHERE date = ?",
+                "DELETE FROM attendance WHERE attendance_id = ?",
                 s
         );
     }
@@ -47,7 +46,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public AttendanceEntity select(String s) throws Exception {
         ResultSet rst = CrudUtil.executeQuery(
-                "SELECT * FROM attendance WHERE date = ?",
+                "SELECT * FROM attendance WHERE attendance_Id = ?",
                 s
         );
 

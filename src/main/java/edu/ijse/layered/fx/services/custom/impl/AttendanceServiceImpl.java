@@ -7,22 +7,21 @@ import edu.ijse.layered.fx.dto.AttendanceDto;
 import edu.ijse.layered.fx.entity.AttendanceEntity;
 import edu.ijse.layered.fx.services.SuperService;
 import edu.ijse.layered.fx.services.custom.AttendanceService;
-
 import java.util.ArrayList;
 
-public class AttendanceServiceImpl implements AttendanceService, SuperService {
+public class AttendanceServiceImpl implements AttendanceService {
 
     private AttendanceDao attendanceDao = (AttendanceDao) DaoFactory.getInstance().getDao(DaoFactory.DaoTypes.ATTENDANCE);
 
     @Override
     public String saveAttendance(AttendanceDto attendanceDto) throws Exception {
         AttendanceEntity attendanceEntity = new AttendanceEntity(
-                attendanceDto.getAttendance_id(),
+                attendanceDto.getAttendanceId(),
                 attendanceDto.getDate(),
-                attendanceDto.getLecture_id(),
-                attendanceDto.getStudent_name(),
-                attendanceDto.getCourse_name(),
-                attendanceDto.getSubject_name(),
+                attendanceDto.getLectureId(),
+                attendanceDto.getStudentName(),
+                attendanceDto.getCourseName(),
+                attendanceDto.getSubjectName(),
                 attendanceDto.getStatus()
         );
         return attendanceDao.save(attendanceEntity) ? "Attendance Saved" : "Attendance Save Failed";
@@ -31,35 +30,35 @@ public class AttendanceServiceImpl implements AttendanceService, SuperService {
     @Override
     public String updateAttendance(AttendanceDto attendanceDto) throws Exception {
         AttendanceEntity attendanceEntity = new AttendanceEntity(
-                attendanceDto.getAttendance_id(),
+                attendanceDto.getAttendanceId(),
                 attendanceDto.getDate(),
-                attendanceDto.getLecture_id(),
-                attendanceDto.getStudent_name(),
-                attendanceDto.getCourse_name(),
-                attendanceDto.getSubject_name(),
+                attendanceDto.getLectureId(),
+                attendanceDto.getStudentName(),
+                attendanceDto.getCourseName(),
+                attendanceDto.getSubjectName(),
                 attendanceDto.getStatus()
         );
         return attendanceDao.update(attendanceEntity) ? "Attendance Updated Successfully" : "Attendance Update Failed";
     }
 
     @Override
-    public String deleteAttendance(String date) throws Exception {
-        return attendanceDao.delete(date) ? "Attendance Deleted Successfully" : "Attendance Delete Failed";
+    public String deleteAttendance(Integer attendanceId) throws Exception {
+        return attendanceDao.delete(String.valueOf(attendanceId)) ? "Attendance Deleted Successfully" : "Attendance Delete Failed";
     }
 
     @Override
-    public AttendanceDto searchAttendance(String date) throws Exception {
+    public AttendanceDto searchAttendance(Integer attendanceId) throws Exception {
 
-        AttendanceEntity attendanceEntity = attendanceDao.select(date);
+        AttendanceEntity attendanceEntity = attendanceDao.select(String.valueOf(attendanceId));
 
         if(attendanceEntity != null){
             return new AttendanceDto(
-               attendanceEntity.getAttendance_id(),
+               attendanceEntity.getAttendanceId(),
                attendanceEntity.getDate(),
-               attendanceEntity.getLecture_id(),
-               attendanceEntity.getStudent_name(),
-               attendanceEntity.getCourse_name(),
-               attendanceEntity.getSubject_name(),
+               attendanceEntity.getLectureId(),
+               attendanceEntity.getStudentName(),
+               attendanceEntity.getCourseName(),
+               attendanceEntity.getSubjectName(),
                attendanceEntity.getStatus()
             );
         }
@@ -76,12 +75,12 @@ public class AttendanceServiceImpl implements AttendanceService, SuperService {
 
         for (AttendanceEntity attendanceEntity : attendanceEntities){
             attendanceDtos.add(new AttendanceDto(
-                    attendanceEntity.getAttendance_id(),
+                    attendanceEntity.getAttendanceId(),
                     attendanceEntity.getDate(),
-                    attendanceEntity.getLecture_id(),
-                    attendanceEntity.getStudent_name(),
-                    attendanceEntity.getCourse_name(),
-                    attendanceEntity.getSubject_name(),
+                    attendanceEntity.getLectureId(),
+                    attendanceEntity.getStudentName(),
+                    attendanceEntity.getCourseName(),
+                    attendanceEntity.getSubjectName(),
                     attendanceEntity.getStatus()
             ));
         }

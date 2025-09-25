@@ -2,7 +2,6 @@ package edu.ijse.layered.fx.dao.custom.impl;
 
 import edu.ijse.layered.fx.dao.CrudUtil;
 import edu.ijse.layered.fx.dao.custom.EnrollDao;
-import edu.ijse.layered.fx.dto.EnrollDto;
 import edu.ijse.layered.fx.entity.EnrollEntity;
 
 import java.sql.ResultSet;

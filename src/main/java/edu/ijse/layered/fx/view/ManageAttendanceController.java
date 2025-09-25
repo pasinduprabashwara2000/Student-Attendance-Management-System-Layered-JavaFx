@@ -6,28 +6,32 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.util.Date;
-import java.util.Objects;
 
 public class ManageAttendanceController {
 
-    final private AttendanceController attendanceController = new AttendanceController();
+    private final AttendanceController attendanceController = new AttendanceController();
 
     @FXML
-    private TableColumn<AttendanceDto, Integer> colId;
+    private Label attendanceLabel;
+
+    @FXML
+    private TextField attendanceTxt;
 
     @FXML
     private TableColumn<AttendanceDto, String> colCourseName;
 
     @FXML
-    private TableColumn<AttendanceDto, java.time.LocalDate> colDate;
+    private TableColumn<AttendanceDto, Date> colDate;
+
+    @FXML
+    private TableColumn<AttendanceDto, Integer> colId;
 
     @FXML
     private TableColumn<AttendanceDto, String> colLectureId;
 
     @FXML
-    private TableColumn<AttendanceDto, Objects> colStatus;
+    private TableColumn<AttendanceDto, String> colStatus;
 
     @FXML
     private TableColumn<AttendanceDto, String> colStudentName;
@@ -45,7 +49,7 @@ public class ManageAttendanceController {
     private Button deleteBtn;
 
     @FXML
-    private TableView<AttendanceDto> detailsTable;
+    private TableView <AttendanceDto> detailsTable;
 
     @FXML
     private TextField lectureTxt;
@@ -57,7 +61,7 @@ public class ManageAttendanceController {
     private Button saveBtn;
 
     @FXML
-    private ComboBox<String> statusPicker;
+    private ComboBox <String> statusPicker;
 
     @FXML
     private TextField studentTxt;
@@ -66,39 +70,52 @@ public class ManageAttendanceController {
     private TextField subjectTxt;
 
     @FXML
+    private Label titleLabel;
+
+    @FXML
     private Button updateBtn;
 
     @FXML
-    private void initialize() {
-        colId.setCellValueFactory(new PropertyValueFactory<>("attendance_id"));
+    private Button delBtn;
+
+    @FXML
+    private TextField delTxt;
+
+    @FXML
+    public void initialize(){
+        colId.setCellValueFactory(new PropertyValueFactory<>("attendanceId"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        colLectureId.setCellValueFactory(new PropertyValueFactory<>("lecture_id"));
-        colStudentName.setCellValueFactory(new PropertyValueFactory<>("student_name"));
-        colCourseName.setCellValueFactory(new PropertyValueFactory<>("course_name"));
-        colSubjectName.setCellValueFactory(new PropertyValueFactory<>("subject_name"));
+        colLectureId.setCellValueFactory(new PropertyValueFactory<>("lectureId"));
+        colStudentName.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+        colCourseName.setCellValueFactory(new PropertyValueFactory<>("courseName"));
+        colSubjectName.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         loadTable();
     }
 
     @FXML
     public void loadTable(){
-        try {
+        try{
             detailsTable.getItems().clear();
             detailsTable.getItems().addAll(attendanceController.getAllAttendance());
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
 
+        detailsTable.setOnMouseClicked(event -> {
+            if(event.getClickCount() == 1){
+                searchAttendance();
+            }
+        });
     }
 
     @FXML
     void Clear(ActionEvent event) {
-        lectureTxt.clear();
-        studentTxt.clear();
-        courseTxt.clear();
-        subjectTxt.clear();
+        attendanceTxt.setText("");
+        lectureTxt.setText("");
+        studentTxt.setText("");
+        courseTxt.setText("");
+        subjectTxt.setText("");
         datePicker.setValue(null);
         statusPicker.setValue(null);
     }
@@ -106,26 +123,12 @@ public class ManageAttendanceController {
     @FXML
     void navigateDelete(ActionEvent event) {
         try {
-            if (datePicker.getValue() == null) {
-                throw new IllegalArgumentException("Please select a date to delete.");
-            }
-
-            String rsp = attendanceController.deleteAttendance(datePicker.getValue().toString());
+            String rsp = attendanceController.deleteAttendance(Integer.parseInt(attendanceTxt.getText()));
+            new Alert(Alert.AlertType.INFORMATION,rsp);
             Clear(event);
             loadTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText(rsp);
-            alert.showAndWait();
-
-        } catch (IllegalArgumentException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
 
@@ -133,7 +136,7 @@ public class ManageAttendanceController {
     void navigateSave(ActionEvent event) {
         try {
             AttendanceDto attendanceDto = new AttendanceDto(
-                    0,
+                    Integer.parseInt(attendanceTxt.getText()),
                     datePicker.getValue(),
                     lectureTxt.getText(),
                     studentTxt.getText(),
@@ -141,26 +144,20 @@ public class ManageAttendanceController {
                     subjectTxt.getText(),
                     statusPicker.getValue()
             );
-
             String rsp = attendanceController.saveAttendance(attendanceDto);
+            new Alert(Alert.AlertType.INFORMATION,rsp).show();
             Clear(event);
             loadTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText(rsp);
-            alert.showAndWait();
-
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
 
     @FXML
     void navigateUpdate(ActionEvent event) {
-        try {
+        try{
             AttendanceDto attendanceDto = new AttendanceDto(
-                    0,
+                    Integer.parseInt(attendanceTxt.getText()),
                     datePicker.getValue(),
                     lectureTxt.getText(),
                     studentTxt.getText(),
@@ -168,18 +165,34 @@ public class ManageAttendanceController {
                     subjectTxt.getText(),
                     statusPicker.getValue()
             );
-
             String rsp = attendanceController.updateAttendance(attendanceDto);
+            new Alert(Alert.AlertType.INFORMATION,rsp).show();
             Clear(event);
             loadTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText(rsp);
-            alert.showAndWait();
-
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
+
+    @FXML
+    public void searchAttendance(){
+        AttendanceDto getSelectedAttendance = detailsTable.getSelectionModel().getSelectedItem();
+        if(getSelectedAttendance == null){
+            new Alert(Alert.AlertType.ERROR,"Please Select Row");
+        }
+
+        try {
+            AttendanceDto attendanceDto = attendanceController.searchAttendance(getSelectedAttendance.getAttendanceId());
+            attendanceTxt.setText(String.valueOf(attendanceDto.getAttendanceId()));
+            datePicker.setValue(attendanceDto.getDate());
+            lectureTxt.setText(attendanceDto.getLectureId());
+            studentTxt.setText(attendanceDto.getStudentName());
+            courseTxt.setText(attendanceDto.getCourseName());
+            subjectTxt.setText(attendanceDto.getSubjectName());
+            statusPicker.setValue(attendanceDto.getStatus());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage());
+        }
+    }
+
 }

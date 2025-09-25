@@ -11,12 +11,12 @@ import java.time.LocalDate;
 @Data
 public class AttendanceDto {
 
-    private int attendance_id;
+    private int attendanceId;
     private LocalDate date;
-    private String lecture_id;
-    private String student_name;
-    private String course_name;
-    private String subject_name;
+    private String lectureId;
+    private String studentName;
+    private String courseName;
+    private String subjectName;
     private String status;
 
 }

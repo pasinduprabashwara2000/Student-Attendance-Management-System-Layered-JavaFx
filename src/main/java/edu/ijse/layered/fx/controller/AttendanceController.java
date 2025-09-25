@@ -18,12 +18,12 @@ public class AttendanceController {
         return attendanceservice.updateAttendance(attendanceDto);
     }
 
-    public String deleteAttendance(String date) throws Exception{
-        return attendanceservice.deleteAttendance(date);
+    public String deleteAttendance(Integer attendanceId) throws Exception{
+        return attendanceservice.deleteAttendance(attendanceId);
     }
 
-    public AttendanceDto searchAttendance(String date) throws Exception{
-        return attendanceservice.searchAttendance(date);
+    public AttendanceDto searchAttendance(Integer attendanceId) throws Exception{
+        return attendanceservice.searchAttendance(attendanceId);
     }
 
     public ArrayList<AttendanceDto> getAllAttendance() throws Exception{

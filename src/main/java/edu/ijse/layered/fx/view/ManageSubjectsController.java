@@ -60,6 +60,12 @@ public class ManageSubjectsController {
         subject_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         course_id.setCellValueFactory(new PropertyValueFactory<>("courseId"));
 
+        detailsTable.setOnMouseClicked(event ->{
+            if (event.getClickCount() == 1){
+                searchSubject();
+            }
+        });
+
         loadAllSubjects();
     }
 
@@ -72,6 +78,7 @@ public class ManageSubjectsController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+
     }
 
     @FXML
@@ -143,4 +150,25 @@ public class ManageSubjectsController {
             alert.showAndWait();
         }
     }
+
+    @FXML
+    public void searchSubject(){
+
+        SubjectDto getSelectedItem = detailsTable.getSelectionModel().getSelectedItem();
+        if(getSelectedItem == null){
+            new Alert(Alert.AlertType.ERROR,"Please Select Row").showAndWait();
+            return;
+        }
+
+        try {
+            SubjectDto subjectDto = subjectController.searchSubject(getSelectedItem.getSubjectId());
+            idTxt.setText(subjectDto.getSubjectId());
+            nameTxt.setText(subjectDto.getName());
+            courseTxt.setText(subjectDto.getCourseId());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).showAndWait();
+        }
+
+    }
+
 }

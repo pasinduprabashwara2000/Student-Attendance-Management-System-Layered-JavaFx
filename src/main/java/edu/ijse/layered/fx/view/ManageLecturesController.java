@@ -9,7 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ManageLecturesController {
 
-    private LectureController lectureController = new LectureController();
+    private final LectureController lectureController = new LectureController();
 
     @FXML
     private TableColumn<LecturerDto, String> contactColmn;
@@ -36,7 +36,7 @@ public class ManageLecturesController {
     private TextField idTxt;
 
     @FXML
-    private TableColumn<LecturerDto, String > nameColmn;
+    private TableColumn<LecturerDto, String> nameColmn;
 
     @FXML
     private Label nameLabel;
@@ -63,93 +63,100 @@ public class ManageLecturesController {
     private Button updateBtn;
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         idColmn.setCellValueFactory(new PropertyValueFactory<>("lectureId"));
         nameColmn.setCellValueFactory(new PropertyValueFactory<>("name"));
         contactColmn.setCellValueFactory(new PropertyValueFactory<>("contactDetails"));
 
         loadTable();
+
+        detailsTabel.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) {
+                selectLecture();
+            }
+        });
     }
 
     @FXML
-    public void loadTable(){
-
+    public void loadTable() {
         try {
             detailsTabel.getItems().clear();
             detailsTabel.getItems().addAll(lectureController.getAllLectures());
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            new Alert(Alert.AlertType.WARNING, e.getMessage()).showAndWait();
         }
-
     }
 
     @FXML
     void clear(ActionEvent event) {
-            idTxt.setText("");
-            nameTxt.setText("");
-            contactTxt.setText("");
+        idTxt.clear();
+        nameTxt.clear();
+        contactTxt.clear();
+        subjectsTxt.clear();
     }
 
     @FXML
     void saveLecture(ActionEvent event) {
-            try {
-                LecturerDto lecturerDto = new LecturerDto(
-                        idTxt.getText(),
-                        nameTxt.getText(),
-                        contactTxt.getText()
-                );
+        try {
+            LecturerDto lecturerDto = new LecturerDto(
+                    idTxt.getText(),
+                    nameTxt.getText(),
+                    contactTxt.getText()
+            );
 
-                String rsp = lectureController.addLecture(lecturerDto);
-                clear(event);
-                loadTable();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText(rsp);
-                alert.showAndWait();
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
-            }
+            String rsp = lectureController.addLecture(lecturerDto);
+            clear(event);
+            loadTable();
+            new Alert(Alert.AlertType.INFORMATION, rsp).showAndWait();
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+        }
     }
 
     @FXML
     void updateLecture(ActionEvent event) {
-            try{
-                LecturerDto lecturerDto = new LecturerDto(
-                        idTxt.getText(),
-                        nameTxt.getText(),
-                        contactTxt.getText()
-                );
+        try {
+            LecturerDto lecturerDto = new LecturerDto(
+                    idTxt.getText(),
+                    nameTxt.getText(),
+                    contactTxt.getText()
+            );
 
-                String rsp = lectureController.updateLecture(lecturerDto);
-                clear(event);
-                loadTable();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText(rsp);
-                alert.showAndWait();
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
-            }
-
+            String rsp = lectureController.updateLecture(lecturerDto);
+            clear(event);
+            loadTable();
+            new Alert(Alert.AlertType.INFORMATION, rsp).showAndWait();
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.WARNING, e.getMessage()).showAndWait();
+        }
     }
 
+    @FXML
     public void deleteLecture(ActionEvent event) {
         try {
             String rsp = lectureController.deleteLecture(idTxt.getText());
             clear(event);
             loadTable();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText(rsp);
-            alert.showAndWait();
+            new Alert(Alert.AlertType.INFORMATION, rsp).showAndWait();
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            new Alert(Alert.AlertType.WARNING, e.getMessage()).showAndWait();
+        }
+    }
+
+    public void selectLecture() {
+        LecturerDto getSelectedLecture = detailsTabel.getSelectionModel().getSelectedItem();
+        if (getSelectedLecture == null) {
+            new Alert(Alert.AlertType.WARNING, "Please Select Row").showAndWait();
+            return;
+        }
+
+        try {
+            LecturerDto lecturerDto = lectureController.searchLecture(getSelectedLecture.getLectureId());
+            idTxt.setText(lecturerDto.getLectureId());
+            nameTxt.setText(lecturerDto.getName());
+            contactTxt.setText(lecturerDto.getContactDetails());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         }
     }
 }
-

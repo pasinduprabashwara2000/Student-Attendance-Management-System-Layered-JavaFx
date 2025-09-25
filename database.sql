@@ -57,13 +57,13 @@ CREATE INDEX idx_enroll_course_id ON enroll(course_id);
 
 -- Table: attendance
 CREATE TABLE attendance (
+    attendance_id INT PRIMARY KEY,
     date         DATE NOT NULL,
     lecture_id   VARCHAR(10) NOT NULL,
     student_name VARCHAR(55) NOT NULL,
     course_name  VARCHAR(55) NOT NULL,
     subject_name VARCHAR(55) NOT NULL,
-    status       ENUM('Present', 'Absent') NOT NULL,
-    PRIMARY KEY (date)
+    status       ENUM('Present', 'Absent') NOT NULL
 );
 
 -- Table: user

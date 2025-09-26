@@ -3,7 +3,9 @@ package edu.ijse.layered.fx.dao.custom.impl;
 import edu.ijse.layered.fx.dao.CrudUtil;
 import edu.ijse.layered.fx.dao.custom.AttendanceDao;
 import edu.ijse.layered.fx.entity.AttendanceEntity;
+
 import java.sql.ResultSet;
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class AttendanceDaoImpl implements AttendanceDao {
@@ -11,9 +13,9 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public boolean save(AttendanceEntity t) throws Exception {
         return CrudUtil.executeUpdate(
-                "INSERT INTO attendance(attendance_id, date, lecture_id, student_name, course_name, subject_name, status) VALUES (?,?,?,?,?,?,?)",
+                "INSERT INTO attendance VALUES (?,?,?,?,?,?,?)",
                 t.getAttendanceId(),
-                t.getDate(),
+                Date.valueOf(t.getDate()),
                 t.getLectureId(),
                 t.getStudentName(),
                 t.getCourseName(),
@@ -25,7 +27,8 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public boolean update(AttendanceEntity t) throws Exception {
         return CrudUtil.executeUpdate(
-                "UPDATE attendance SET lecture_id = ?, student_name = ?, course_name = ?, subject_name = ?, status = ? WHERE attendance_id = ?",
+                "UPDATE attendance SET date = ?, lecture_id = ?, student_name = ?, course_name = ?, subject_name = ?, status = ? WHERE attendance_id = ?",
+                Date.valueOf(t.getDate()),
                 t.getLectureId(),
                 t.getStudentName(),
                 t.getCourseName(),
@@ -46,7 +49,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
     @Override
     public AttendanceEntity select(String s) throws Exception {
         ResultSet rst = CrudUtil.executeQuery(
-                "SELECT * FROM attendance WHERE attendance_Id = ?",
+                "SELECT * FROM attendance WHERE attendance_id = ?",
                 s
         );
 

@@ -63,6 +63,12 @@ public class ManageCoursesController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+
+        detailsTabel.setOnMouseClicked(event -> {
+            if(event.getClickCount() == 1){
+                searchCourse();
+            }
+        });
     }
 
     @FXML
@@ -128,6 +134,21 @@ public class ManageCoursesController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
+        }
+    }
+
+    public void searchCourse(){
+        CourseDto getSelectedCourse = detailsTabel.getSelectionModel().getSelectedItem();
+        if(getSelectedCourse == null){
+            new Alert(Alert.AlertType.ERROR,"Please Select Row");
+        }
+
+        try{
+            CourseDto courseDto = courseController.searchCourse(getSelectedCourse.getCourseId());
+            idTxt.setText(courseDto.getCourseId());
+            nameTxt.setText(courseDto.getName());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage());
         }
     }
 }

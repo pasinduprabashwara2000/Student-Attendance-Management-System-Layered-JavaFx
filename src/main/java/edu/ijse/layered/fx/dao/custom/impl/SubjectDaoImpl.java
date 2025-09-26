@@ -11,55 +11,63 @@ public class SubjectDaoImpl implements SubjectDao {
 
     @Override
     public boolean save(SubjectEntity t) throws Exception {
-        return CrudUtil.executeUpdate("INSERT INTO subject VALUES (?,?,?)",
+        return CrudUtil.executeUpdate(
+                "INSERT INTO subject VALUES (?,?,?)",
                 t.getSubjectId(),
                 t.getCourseId(),
-                t.getName());
+                t.getName()
+        );
     }
 
     @Override
     public boolean update(SubjectEntity t) throws Exception {
-        return CrudUtil.executeUpdate("UPDATE subject SET name = ?, course_id = ? WHERE subject_id = ?",
-                t.getName(),
+        return CrudUtil.executeUpdate(
+                "UPDATE subject SET course_id = ?, subject_name = ? WHERE subject_id = ?",
                 t.getCourseId(),
-                t.getSubjectId());
+                t.getName(),
+                t.getSubjectId()
+        );
     }
 
     @Override
     public boolean delete(String id) throws Exception {
-        return CrudUtil.executeUpdate("DELETE FROM subject WHERE sub_id", id);
+        return CrudUtil.executeUpdate(
+                "DELETE FROM subject WHERE subject_id = ?",
+                id
+        );
     }
 
     @Override
     public SubjectEntity select(String id) throws Exception {
+        ResultSet rst = CrudUtil.executeQuery(
+                "SELECT * FROM subject WHERE subject_id = ?",
+                id
+        );
 
-        ResultSet rst = CrudUtil.executeQuery("SELECT * FROM subject WHERE sub_id",id);
-        if(rst.next()) {
+        if (rst.next()) {
             return new SubjectEntity(
-                rst.getString("subject_id"),
-                rst.getString("name"),
-                rst.getString("course_id")
+                    rst.getString("subject_id"),
+                    rst.getString("course_id"),
+                    rst.getString("subject_name")
             );
         }
-
-            return null;
+        return null;
     }
 
     @Override
     public ArrayList<SubjectEntity> viewAll() throws Exception {
+        ResultSet rst = CrudUtil.executeQuery("SELECT * FROM subject");
+        ArrayList<SubjectEntity> subjectEntities = new ArrayList<>();
 
-       ResultSet rst = CrudUtil.executeQuery("SELECT * FROM subject");
-       ArrayList <SubjectEntity> subjectEntities = new ArrayList<>();
-
-       while (rst.next()){
-           subjectEntities.add(
-                   new SubjectEntity(
-                           rst.getString("subject_id"),
-                           rst.getString("course_id"),
-                           rst.getString("subject_name")
-                   ));
-       }
-
+        while (rst.next()) {
+            subjectEntities.add(
+                    new SubjectEntity(
+                            rst.getString("subject_id"),
+                            rst.getString("course_id"),
+                            rst.getString("subject_name")
+                    )
+            );
+        }
         return subjectEntities;
     }
 }

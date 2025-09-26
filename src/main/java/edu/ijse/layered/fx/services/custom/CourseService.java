@@ -13,4 +13,5 @@ public interface CourseService extends SuperService {
     public String deleteCourse(String id) throws Exception;
     public CourseDto searchCourse(String id) throws Exception;
     public ArrayList <CourseDto> getAllCourses () throws Exception;
+
 }

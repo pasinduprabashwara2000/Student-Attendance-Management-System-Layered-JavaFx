@@ -61,6 +61,12 @@ public class ManageEnrollmentController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+
+        detailsTable.setOnMouseClicked(event -> {
+            if(event.getClickCount() == 1){
+                searchEnrollment();
+            }
+        });
     }
 
     @FXML
@@ -115,6 +121,23 @@ public class ManageEnrollmentController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
+        }
+
+    }
+
+    public void searchEnrollment(){
+
+        EnrollDto getSelectedEnrollment = detailsTable.getSelectionModel().getSelectedItem();
+        if(getSelectedEnrollment == null){
+            new Alert(Alert.AlertType.ERROR,"Please Select Row");
+        }
+
+        try{
+            EnrollDto enrollDto = enrollController.searchEnroll(String.valueOf(getSelectedEnrollment.getRegNum()));
+            regTxt.setText(String.valueOf(enrollDto.getRegNum()));
+            idTxt.setText(enrollDto.getCourseId());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage());
         }
 
     }

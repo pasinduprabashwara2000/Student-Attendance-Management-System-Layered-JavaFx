@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class ManageAttendanceReportController {
 
-    private final AttendanceReportsController attendanceReportsController = new AttendanceReportsController();
+    private final AttendanceReportsController attendanceReportController = new AttendanceReportsController();
 
     @FXML
     private TableColumn<AttendanceDto, String> colCourseName;
@@ -42,7 +42,7 @@ public class ManageAttendanceReportController {
     private Button reportBtn;
 
     @FXML
-    private TableView<AttendanceDto> tableView;
+    private TableView<AttendanceDto> detailsTable;
 
     @FXML
     private Label titleLabel;
@@ -67,16 +67,15 @@ public class ManageAttendanceReportController {
 
     @FXML
     void onFilter(ActionEvent event) {
-        LocalDate startDate = fromDatePicker.getValue();
-        LocalDate endDate = toDatePicker.getValue();
+        LocalDate start = fromDatePicker.getValue();
+        LocalDate end = toDatePicker.getValue();
 
         try {
-            tableView.getItems().clear();
-            tableView.getItems().addAll(attendanceReportsController.searchByDate(startDate,endDate));
+            detailsTable.getItems().clear();
+            detailsTable.getItems().addAll(attendanceReportController.searchByDate(start,end));
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage());
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
 
 }
-

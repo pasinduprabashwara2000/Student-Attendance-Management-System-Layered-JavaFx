@@ -32,7 +32,7 @@
             <Font name="System Bold" size="15.0" />
          </font></Button>
 
-        <TableView fx:id="tableView" layoutX="46.0" layoutY="168.0" prefHeight="553.0" prefWidth="964.0" stylesheets="@css/style2.css">
+        <TableView fx:id="detailsTable" layoutX="46.0" layoutY="168.0" prefHeight="553.0" prefWidth="964.0" stylesheets="@css/style2.css">
             <columns>
                 <TableColumn fx:id="colDate" prefWidth="124.0" text="Date" />
                 <TableColumn fx:id="colLectureId" prefWidth="170.0" text="Lecture ID" />

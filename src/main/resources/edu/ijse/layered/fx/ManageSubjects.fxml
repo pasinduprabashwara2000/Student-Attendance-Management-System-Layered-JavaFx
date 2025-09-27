@@ -72,8 +72,8 @@
         <TableView fx:id="detailsTable" layoutX="51.0" layoutY="265.0" prefHeight="331.0" prefWidth="956.0">
             <columns>
                 <TableColumn fx:id="subject_id" prefWidth="285.0" text="Subject ID" />
-                <TableColumn fx:id="subject_name" prefWidth="322.0" text="course_ID" />
-                <TableColumn fx:id="course_id" prefWidth="348.0" text="Subject_Name" />
+                <TableColumn fx:id="subject_name" prefWidth="322.0" text="Course ID" />
+                <TableColumn fx:id="course_id" prefWidth="348.0" text="Subject Name" />
             </columns>
         </TableView>
     </children>

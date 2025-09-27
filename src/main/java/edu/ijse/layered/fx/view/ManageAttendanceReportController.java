@@ -18,7 +18,7 @@ public class ManageAttendanceReportController {
     private TableColumn<AttendanceDto, String> colCourseName;
 
     @FXML
-    private TableColumn<AttendanceDto, Date> colDate;
+    private TableColumn<AttendanceDto, LocalDate> colDate;
 
     @FXML
     private TableColumn<AttendanceDto, String> colLectureId;

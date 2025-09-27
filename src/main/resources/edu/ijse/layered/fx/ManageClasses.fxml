@@ -78,11 +78,11 @@
       </Button>
       <TableView fx:id="detailsTabel" layoutX="42.0" layoutY="333.0" prefHeight="356.0" prefWidth="965.0" stylesheets="@css/style2.css">
         <columns>
-            <TableColumn fx:id="classId" prefWidth="186.0" text="class_id" />
-            <TableColumn fx:id="courseId" prefWidth="186.0" text="course_id" />
-            <TableColumn fx:id="subjectId" prefWidth="186.0" text="subject_id" />
-            <TableColumn fx:id="lectureId" prefWidth="186.0" text="lecture_id" />
-           <TableColumn fx:id="date" prefWidth="220.0" text="date" />
+            <TableColumn fx:id="classId" prefWidth="186.0" text="Class ID" />
+            <TableColumn fx:id="courseId" prefWidth="186.0" text="Course ID" />
+            <TableColumn fx:id="subjectId" prefWidth="186.0" text="Subject ID" />
+            <TableColumn fx:id="lectureId" prefWidth="186.0" text="Lecture ID" />
+           <TableColumn fx:id="date" prefWidth="220.0" text="Date" />
         </columns>
       </TableView>
       <Label fx:id="dateLabel" layoutX="48.0" layoutY="193.0" prefHeight="43.0" prefWidth="213.0" stylesheets="@css/style2.css" text="Date :">
